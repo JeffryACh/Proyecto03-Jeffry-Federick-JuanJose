@@ -131,6 +131,17 @@
     <ClInclude Include="BitUtils.h" />
     <ClInclude Include="Huffman.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Descomprimido.txt" />
+    <Text Include="Entrada.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Comprimido.exe" />
+    <None Include="Comprimido.zip" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Comprimido.mp4" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
