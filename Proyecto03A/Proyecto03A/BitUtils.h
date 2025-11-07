@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BitUtils_H
+#define BitUtils_H
 #include <string>
 #include <vector>
 #include <fstream>
@@ -12,3 +13,5 @@ public:
     static void escribirBitsEnArchivo(const string& pNombreArchivo, const string& pCadenaBits);
     static string leerBitsDeArchivo(const string& pNombreArchivo);
 };
+
+#endif // BitUtils_H

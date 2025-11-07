@@ -1,4 +1,5 @@
-#pragma once
+#ifndef Huffman_H
+#define Huffman_H
 #include "BitUtils.h"
 #include <fstream>
 #include <queue>
@@ -32,3 +33,4 @@ private:
     void leerComprimido(const string& pArchivoEntrada, const string& pArchivoSalida);
 };
 
+#endif // Huffman_H
