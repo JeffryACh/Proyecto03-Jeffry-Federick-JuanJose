@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Archivos de recursos\ArchivosDesifrados">
+      <UniqueIdentifier>{3d3e9783-b6ce-45e5-b30c-7534f9724553}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de recursos\ArchivosCifrados">
+      <UniqueIdentifier>{ac812d3c-8868-4045-a068-e893cb6939b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de recursos\Archivos">
+      <UniqueIdentifier>{511d2632-d830-4381-9b9d-a4c7fdc755d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Encriptador.cpp">
