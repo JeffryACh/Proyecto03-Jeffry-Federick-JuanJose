@@ -2,41 +2,55 @@
 
 /*
 * Escribe una cadena de bits en un archivo binario.
-* Observación: La cadena de bits debe tener una longitud múltiplo de 8.
+* Observación: Utiliza operaciones bit a bit para optimizar la escritura.
 * @param:
-*   - string& pNombreArchivo: Nombre del archivo donde se escribirán los bits.
-*   - string& pCadenaBits: Cadena de bits a escribir en el archivo.
+*   - const string& pCadenaBits: Cadena de bits a escribir.
+*   - ofstream& pArchivo: Archivo de salida en modo binario.
 * @return:
 *   + void: No retorna valor.
 */
-void UtilidadesBit::escribirBitsEnArchivo(const string& pNombreArchivo, const string& pCadenaBits) 
+void UtilidadesBit::escribirBitsEnArchivo(const string& pCadenaBits, ofstream& pArchivo)
 {
-    ofstream archivo(pNombreArchivo, ios::binary);
-    for (size_t i = 0; i < pCadenaBits.size(); i += 8) 
+    // Procesar la cadena de bits en grupos de 8
+    for (size_t i = 0; i < pCadenaBits.size(); i += 8)
     {
         string byteCadena = pCadenaBits.substr(i, 8);
-        while (byteCadena.size() < 8) byteCadena += '0';
-        unsigned char byte = static_cast<unsigned char>(bitset<8>(byteCadena).to_ulong());
-        archivo.put(byte);
+        while (byteCadena.size() < 8)
+            byteCadena += '0';  // Padding con ceros
+
+        // Usar operaciones bit a bit para construir el byte
+        unsigned char byte = 0;
+        for (int j = 0; j < 8; j++)
+        {
+            // Usar OR para establecer bits
+            if (byteCadena[j] == '1')
+                byte |= (1 << (7 - j));
+        }
+        pArchivo.put(static_cast<char>(byte));
     }
-    archivo.close();
 }
 
 /*
 * Lee una cadena de bits desde un archivo binario.
-* Observación: El archivo debe contener datos en formato binario.
+* Observación: Utiliza operaciones bit a bit para optimizar la lectura.
 * @param:
-*   - string& pNombreArchivo: Nombre del archivo desde donde se leerán los bits.
+*   - const string& pNombreArchivo: Nombre del archivo de entrada.
 * @return:
 *   + string: Cadena de bits leída del archivo.
 */
-string UtilidadesBit::leerBitsDeArchivo(const string& pNombreArchivo) 
+string UtilidadesBit::leerBitsDeArchivo(const string& pNombreArchivo)
 {
     ifstream archivo(pNombreArchivo, ios::binary);
     string cadenaBits;
     unsigned char byte;
+
     while (archivo.read(reinterpret_cast<char*>(&byte), 1))
-        cadenaBits += bitset<8>(byte).to_string();
+    {
+        // Usar AND para extraer cada bit
+        for (int i = 7; i >= 0; i--)
+            cadenaBits += (byte & (1 << i)) ? '1' : '0';
+    }
+
     archivo.close();
     return cadenaBits;
 }

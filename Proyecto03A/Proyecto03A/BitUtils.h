@@ -10,7 +10,7 @@ using namespace std;
 class UtilidadesBit 
 {
 public:
-    static void escribirBitsEnArchivo(const string& pNombreArchivo, const string& pCadenaBits);
+    static void escribirBitsEnArchivo(const string& pCadenaBits, ofstream& pArchivo);
     static string leerBitsDeArchivo(const string& pNombreArchivo);
 };
 

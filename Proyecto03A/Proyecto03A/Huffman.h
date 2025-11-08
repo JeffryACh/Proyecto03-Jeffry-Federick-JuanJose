@@ -29,8 +29,7 @@ private:
     void construirTablaFrecuencias(const string& pArchivoEntrada, unordered_map<char, int>& pFrecuencias);
     Nodo* construirArbol(const unordered_map<char, int>& pFrecuencias);
     void generarCodigos(Nodo* pRaiz, string pCodigo, unordered_map<char, string>& pCodigos);
-    void escribirComprimido(const string& pArchivoEntrada, const string& pArchivoSalida, const unordered_map<char, string>& pCodigos);
-    void leerComprimido(const string& pArchivoEntrada, const string& pArchivoSalida);
+    void escribirComprimido(const string& pArchivoEntrada, const string& pArchivoSalida, const unordered_map<char, string>& pCodigos, const unordered_map<char, int>& pFrecuencias);
 };
 
 #endif // Huffman_H

@@ -132,15 +132,20 @@
     <ClInclude Include="Huffman.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Descomprimido.txt" />
+    <Text Include="Descomprimidoentrada.txt" />
     <Text Include="Entrada.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Comprimido.exe" />
-    <None Include="Comprimido.zip" />
+    <None Include="entrada.exe" />
+    <None Include="entrada.zip" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="Comprimido.mp4" />
+    <Image Include="Descomprimidoentrada.bmp" />
+    <Image Include="Entrada.bmp" />
+    <Image Include="entrada.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="entrada.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
