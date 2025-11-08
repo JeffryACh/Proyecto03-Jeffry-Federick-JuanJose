@@ -11,235 +11,173 @@
 
 #include <iostream>
 #include <string>
-#include <fstream>
-#include <limits>
-#include "Huffman.h"
+#include <queue>
+#include <unordered_map>
 
 using namespace std;
 
-// Constantes para los tipos de archivo usando operaciones bitwise
-const unsigned char TIPO_TXT = 0x01;   // 00000001
-const unsigned char TIPO_BMP = 0x02;   // 00000010
-const unsigned char TIPO_ZIP = 0x04;   // 00000100
-const unsigned char TIPO_MP3 = 0x08;   // 00001000
-const unsigned char TIPO_MP4 = 0x10;   // 00010000
-const unsigned char TIPO_JPG = 0x20;   // 00100000
-const unsigned char TIPO_EXE = 0x40;   // 01000000
+/*
+* Nodo del arbol
+* Observación: Estructura utilizada para representar cada nodo en el árbol de Huffman.
+* @attributes:
+*	- char simbolo: Caracter almacenado en el nodo.
+*	- int frecuencia: Frecuencia del caracter.
+*	- Node* izq: Puntero al hijo izquierdo.
+*   - Node* der: Puntero al hijo derecho.
+*/ 
+struct Node 
+{
+	char simbolo;
+	int frecuencia;
+	Node* izq, * der;
+};
 
 /*
-* Limpia el buffer de entrada estándar.
-* Observación: Útil para manejar entradas inválidas.
+* Funcion para asignar un nuevo nodo en el arbol
+* Observación: Crea y retorna un nuevo nodo con los valores proporcionados.
 * @param:
-*   - Ninguno.
+*	- char simbolo: Caracter a almacenar en el nodo.
+* 	- int frecuencia: Frecuencia del caracter.
+*   - Node* izq: Puntero al hijo izquierdo.
+*   - Node* der: Puntero al hijo derecho.
 * @return:
-*   + void: No retorna valor.
-*/
-void limpiarBuffer()
+*	+ Node*: Puntero al nuevo nodo creado.
+*/ 
+Node* getNode(char simbolo, int frecuencia, Node* izq, Node* der) 
 {
-    cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	Node* nodo = new Node();
+
+	nodo->simbolo = simbolo;
+	nodo->frecuencia = frecuencia;
+	nodo->izq = izq;
+	nodo->der = der;
+
+	return nodo;
 }
 
 /*
-* Verifica si un archivo existe y es accesible.
-* Observación: Utiliza operaciones de flujo de archivos.
-* @param:
-*   - const string& pNombreArchivo: Nombre del archivo a verificar.
-* @return:
-*   + bool: true si el archivo existe y es accesible, false en caso contrario.
-*/
-bool archivoExiste(const string& pNombreArchivo) 
+* Objeto de comparacion que será usado para ordenar la pila
+* Observación: Define el criterio de comparación para la prioridad en la cola.
+* @attributes:
+*	- bool operator() (Node* i, Node* d): Sobrecarga del operador para comparar dos nodos.
+*/ 
+struct comp
 {
-    ifstream archivo(pNombreArchivo.c_str());
-    return archivo.good();
+	bool operator() (Node* i, Node* d)
+	{
+		return i->frecuencia > d->frecuencia;
+	}
+};
+
+/*
+* Revisa el arbol de Huffman y guarda los códigos en un mapa
+* Observación: Realiza un recorrido del árbol para generar los códigos de Huffman.
+* @param:
+*	- Node* raiz: Puntero a la raíz del árbol de Huffman.
+*   - string str: Cadena que representa el código actual.
+*   - unordered_map<char, string>& CodigoHuffman: Mapa para almacenar los códigos generados.
+* @return:
+*	+ void: No retorna valor.
+*/
+void encode(Node* raiz, string str, unordered_map<char, string>& CodigoHuffman) 
+{
+	if (raiz == nullptr)
+		return;
+	if (!raiz->izq && !raiz->der) 
+		CodigoHuffman[raiz->simbolo] = str;
+
+	encode(raiz->izq, str + "0", CodigoHuffman);
+	encode(raiz->der, str + "1", CodigoHuffman);
 }
 
 /*
-* Obtiene la extensión de un archivo.
-* Observación: Retorna una cadena vacía si no hay extensión.
+* Revisa el arbol y decodifica los simbolos codificados
+* Observación: Realiza un recorrido del árbol para decodificar una cadena de bits.
 * @param:
-*   - const string& pNombreArchivo: Nombre del archivo.
+*	- Node* raiz: Puntero a la raíz del árbol de Huffman.
+*   - int& index: Índice actual en la cadena de bits.
+*   - string str: Cadena de bits a decodificar.
 * @return:
-*   + string: Extensión del archivo incluyendo el punto (.), o cadena vacía si no hay extensión.
+*	+ void: No retorna valor.
 */
-string obtenerExtension(const string& pNombreArchivo)
-{
-    size_t pos = pNombreArchivo.find_last_of(".");
-    if (pos != string::npos) 
-        return pNombreArchivo.substr(pos);
-    return "";
+void decode(Node* raiz, int& index, string str) {
+	if (raiz == nullptr) 
+		return;
+	
+	if (!raiz->izq && !raiz->der) {
+		cout << raiz->simbolo;
+		return;
+	}
+	index++;
+	if (str[index] == '0')
+		decode(raiz->izq, index, str);
+	else
+		decode(raiz->der, index, str);
 }
 
 /*
-* Obtiene el nombre del archivo sin su extensión.
-* Observación: Retorna el nombre completo si no hay extensión.
+* Crea el arbol de Huffman y decodifocas dados los simbolos
+* Observación: Construye el árbol de Huffman a partir de la frecuencia de los símbolos en el texto.
 * @param:
-*   - const string& pNombreArchivo: Nombre del archivo.
+*	- string text: Texto a comprimir y descomprimir.
 * @return:
-*   + string: Nombre del archivo sin la extensión.
+*	+ void: No retorna valor.
 */
-string obtenerNombreSinExtension(const string& pNombreArchivo) 
+void CrearArbol(string text) 
 {
-    size_t pos = pNombreArchivo.find_last_of(".");
-    if (pos != string::npos) 
-        return pNombreArchivo.substr(0, pos);
-    return pNombreArchivo;
+	// Cuenta la cantidad de veces que aparece cada simbolo y la guarda en el mapa
+	unordered_map<char, int> frecuencia;
+	for (char simbolo : text) 
+		frecuencia[simbolo]++;
+	
+	// Crea una cola de prioridad para guardar los nodos del arbol
+	priority_queue<Node*, vector<Node*>, comp> pq;
+	// Agrega a la cola de prioridad los nodos de cada simbolo
+	for (auto pair : frecuencia) 
+		pq.push(getNode(pair.first, pair.second, nullptr, nullptr));
+
+	// Hacer todo el proceso hasta que haya mas de 1 nodo en la cola
+	while (pq.size() != 1) 
+	{
+		Node* izq = pq.top(); pq.pop();
+		Node* der = pq.top(); pq.pop();
+		int sum = izq->frecuencia + der->frecuencia;
+		pq.push(getNode('\0', sum, izq, der));
+	}
+
+	Node* raiz = pq.top();
+	// Imprime los codigos para cada simbolo
+	unordered_map<char, string> CodigoHuffman;
+	encode(raiz, "", CodigoHuffman);
+	cout << "\nLos codigos de Huffman son:\n" << "\n";
+	for (auto pair : CodigoHuffman) 
+		cout << pair.first << " " << pair.second << '\n';
+
+	// Imprime el mensaje original que el usuario ingreso directamente, el codificado
+	// y decodifica el codificado y lo imprime de nuevo
+	cout << "\nEl mensaje original era:\n" << text << '\n';
+	string str = "";
+	for (char simbolo : text) 
+		str += CodigoHuffman[simbolo];
+	
+	cout << "\nEl texto codificado es: \n" << str << '\n';
+	int index = -1;
+	cout << "\nEl texto decodificado es: \n";
+	while (index < (int)str.size() - 1)
+		decode(raiz, index, str);
+	cout << "\n\n\n";
 }
 
-/*
-* Obtiene una opción válida del usuario dentro de un rango específico.
-* Observación: Maneja entradas inválidas y fuera de rango.
-* @param:
-*   - int pMin: Valor mínimo válido (inclusive).
-*   - int pMax: Valor máximo válido (inclusive).
-*   - const string& pMensaje: Mensaje a mostrar al usuario.
-* @return:
-*   + int: Opción válida ingresada por el usuario.
-*/
-int obtenerOpcionValida(int pMin, int pMax, const string& pMensaje)
+int main() 
 {
-    int opcion;
-    bool entradaValida = false;
-    
-    do {
-        cout << pMensaje;
-        if (cin >> opcion) 
-        {
-            // Verificar si el número está en el rango válido
-            if (opcion >= pMin && opcion <= pMax) 
-                entradaValida = true;
-            else 
-            {
-                cout << "Error: La opción " << opcion << " no existe en el menú.\n";
-                cout << "Por favor seleccione una opción entre " << pMin << " y " << pMax << ".\n";
-            }
-        } 
-        else 
-        {
-            cout << "Error: Entrada inválida. Por favor ingrese un número.\n";
-            limpiarBuffer();
-        }
-    } while (!entradaValida);
-    
-    return opcion;
-}
+	cout << "\n\n\n-----------------------------";
+	cout << "\n Compresion y Descompresion con el metodo de Huffman";
 
-/*
-* Muestra el menú de formatos de compresión y obtiene la selección del usuario.
-* Observación: Utiliza la función de validación de opciones.
-* @param:
-*   - Ninguno.
-* @return:
-*   + string: Extensión del formato de compresión seleccionado.
-*/
-string mostrarMenuCompresion() 
-{
-    cout << "\nSeleccione el formato de compresión:\n";
-    cout << "1. ZIP\n";
-    cout << "2. MP3\n";
-    cout << "3. MP4\n";
-    cout << "4. JPG\n";
-    cout << "5. EXE\n";
-    
-    int opcion = obtenerOpcionValida(1, 5, "Opción: ");
-    
-    switch (opcion) 
-    {
-        case 1: return ".zip";
-        case 2: return ".mp3";
-        case 3: return ".mp4";
-        case 4: return ".jpg";
-        case 5: return ".exe";
-        default: return "";
-    }
-}
+	string text;
+	cout << "\n\nIngrese el mensaje que desea comprimir: ";
+	getline(cin, text);
+	CrearArbol(text);
+	cout << "\n";
+	return 0;
 
-int main()
-{
-    Huffman huffman;
-    string archivoEntrada, archivoSalida;
-
-    cout << "Compresor Huffman\n";
-    
-    // Menú principal con validación
-    int opcionPrincipal = obtenerOpcionValida(1, 2, 
-        "1. Comprimir\n"
-        "2. Descomprimir\n"
-        "Opción: ");
-
-    if (opcionPrincipal == 1)
-    {
-        // Menú de tipo de archivo con validación
-        cout << "\nSeleccione el tipo de archivo a comprimir:\n";
-        cout << "1. Archivo de texto (.txt)\n";
-        cout << "2. Imagen BMP (.bmp)\n";
-        
-        int tipoArchivo = obtenerOpcionValida(1, 2, "Opción: ");
-
-        // Determinar archivo de entrada según tipo
-        archivoEntrada = (tipoArchivo == 1) ? "entrada.txt" : "entrada.bmp";
-        
-        // Verificar existencia del archivo usando AND
-        if (!archivoExiste(archivoEntrada)) 
-        {
-            cout << "Error: El archivo " << archivoEntrada << " no existe o no es accesible.\n";
-            return 1;
-        }
-
-        // Obtener formato de compresión con validación integrada
-        string extension = mostrarMenuCompresion();
-        
-        // Usar XOR para generar marca de compresión
-        unsigned char tipoMarca = (tipoArchivo == 1) ? TIPO_TXT : TIPO_BMP;
-        unsigned char marcaCompresion = tipoMarca ^ 0xFF;
-        archivoSalida = obtenerNombreSinExtension(archivoEntrada) + extension;
-      
-        huffman.comprimir(archivoEntrada, archivoSalida);
-        cout << "Archivo comprimido exitosamente como: " << archivoSalida << endl;
-    }
-    else // opcionPrincipal == 2
-    { 
-        // Menú de tipo de archivo comprimido con validación
-        cout << "\nSeleccione el tipo de archivo comprimido:\n";
-        cout << "1. ZIP (.zip)\n";
-        cout << "2. MP3 (.mp3)\n";
-        cout << "3. MP4 (.mp4)\n";
-        cout << "4. JPG (.jpg)\n";
-        cout << "5. EXE (.exe)\n";
- 
-        int formatoComprimido = obtenerOpcionValida(1, 5, "Opción: ");
-        string extension = "." + string(formatoComprimido == 1 ? "zip" : 
-            formatoComprimido == 2 ? "mp3" :
-            formatoComprimido == 3 ? "mp4" :
-            formatoComprimido == 4 ? "jpg" : "exe");
-        
-        archivoEntrada = "entrada" + extension;
-  
-        // Verificar archivo comprimido usando OR
-        if (!archivoExiste(archivoEntrada)) 
-        {
-            cout << "Error: El archivo comprimido " << archivoEntrada << " no existe o no es accesible.\n";
-            return 1;
-        }
-
-        // Submenú para seleccionar el tipo de archivo de salida
-        cout << "\nSeleccione el tipo de archivo a descomprimir:\n";
-        cout << "1. Archivo de texto (.txt)\n";
-        cout << "2. Imagen BMP (.bmp)\n";
-        
-        int tipoArchivoSalida = obtenerOpcionValida(1, 2, "Opción: ");
-      
-        // Usar operaciones bitwise para determinar la extensión
-        unsigned char tipoSalida = (tipoArchivoSalida == 1) ? TIPO_TXT : TIPO_BMP;
-        // Usar NOT para invertir los bits del tipo de archivo comprimido
-        unsigned char formatoOriginal = ~(1 << (formatoComprimido - 1)) & tipoSalida;
-        string extensionOriginal = (tipoArchivoSalida == 1) ? ".txt" : ".bmp";
- 
-        archivoSalida = "Descomprimido" + obtenerNombreSinExtension(archivoEntrada) + extensionOriginal;
-      
-        huffman.descomprimir(archivoEntrada, archivoSalida);
-        cout << "Archivo descomprimido exitosamente como: " << archivoSalida << endl;
-    }
-
-    return 0;
 }

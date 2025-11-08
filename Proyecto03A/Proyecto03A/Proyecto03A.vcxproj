@@ -123,13 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BitUtils.cpp" />
-    <ClCompile Include="Huffman.cpp" />
     <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BitUtils.h" />
-    <ClInclude Include="Huffman.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Descomprimidoentrada.txt" />
