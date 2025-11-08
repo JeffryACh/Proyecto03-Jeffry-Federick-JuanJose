@@ -1,12 +1,12 @@
 #ifndef Huffman_H
 #define Huffman_H
-#include "BitUtils.h"
 #include <fstream>
 #include <queue>
 #include <iostream>
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "BitUtils.h"
 
 using namespace std;
 
