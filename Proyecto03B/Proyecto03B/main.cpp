@@ -52,12 +52,12 @@ int main()
         getline(cin, msg);
         if (opt == '1')
         {
-            string nuevo = cambio::encriptar(msg, clave);
+            string nuevo = cambio::encriptar2(msg, clave);
             cout << "dato encriptado " << nuevo << " " << endl;
         }
         else 
         {
-            string nuevo = cambio::desencriptar(msg, clave);
+            string nuevo = cambio::desencriptar2(msg, clave);
             cout << "dato desencriptado " << nuevo << " " << endl;
         }
         _getch();

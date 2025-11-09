@@ -126,7 +126,6 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Descomprimido.txt" />
     <Text Include="Entrada.txt" />
     <Text Include="Nuevo.txt" />
     <Text Include="Salida.txt" />
@@ -139,7 +138,6 @@
   <ItemGroup>
     <Image Include="Comprimido.jpg" />
     <Image Include="ComprimidoBMP.jpg" />
-    <Image Include="Descomprimido.bmp" />
     <Image Include="Entrada.bmp" />
     <Image Include="SalidaEXE.bmp" />
     <Image Include="SalidaJPG.bmp" />
@@ -152,9 +150,13 @@
     <None Include="Comprimido.zip" />
     <None Include="ComprimidoBMP.exe" />
     <None Include="ComprimidoBMP.zip" />
+    <None Include="ComprimidoPDF.rar" />
+    <None Include="ComprimidoPDF.zip" />
     <None Include="ComprimidoTXT.rar" />
     <None Include="ComprimirNuevo.rar" />
     <None Include="LOL.exe" />
+    <None Include="PruebaPDF.pdf" />
+    <None Include="SalidaZIP.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="ComprimidoBMP.mp3" />

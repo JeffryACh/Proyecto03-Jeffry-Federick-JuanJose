@@ -45,7 +45,7 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="EncriptadoTXT01.enc">
+    <None Include="Encriptado01.enc">
       <Filter>Archivos de recursos\ArchivosCifrados</Filter>
     </None>
   </ItemGroup>

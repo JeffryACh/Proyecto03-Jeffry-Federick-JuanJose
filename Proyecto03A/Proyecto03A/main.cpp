@@ -10,7 +10,9 @@
 */
 
 #include <iostream>
+#include <algorithm>
 #include <string>
+#include <cctype>
 #include <queue>
 #include <unordered_map>
 #include <fstream>
@@ -298,27 +300,58 @@ void DescomprimirArchivo(const string& inputFile, const string& outputFile)
 	cout << "Archivo descomprimido correctamente: " << outputFile << endl;
 }
 
+string convertirMinusculas(string& texto) 
+{
+	transform(texto.begin(), texto.end(), texto.begin(), [](unsigned char c) {
+		return std::tolower(c);
+		});
+	return texto;
+}
+
 int main() 
 {
-	cout << "\n\n\n-----------------------------";
-	cout << "\n Compresion y Descompresion con el metodo de Huffman";
-
 	string opcion;
-	cout << "\n\nSeleccione una opción: (c) Comprimir, (d) Descomprimir: ";
-	cin >> opcion;
 
-	string inputFile, outputFile;
-	cout << "\nIngrese el archivo de entrada: ";
-	cin >> inputFile;
-	cout << "\nIngrese el archivo de salida: ";
-	cin >> outputFile;
+
 	
-	if (opcion == "c") 
-		CrearArbolArchivo(inputFile, outputFile);
-	else if (opcion == "d") 
-		DescomprimirArchivo(inputFile, outputFile);
-	else 
-		cout << "Opción no válida." << endl;
+	while (convertirMinusculas(opcion) != "s")
+	{
+		cout << "\n\n\n-----------------------------";
+		cout << "\n Compresion y Descompresion con el metodo de Huffman";
+		cout << "\n\nSeleccione una opción: (c) Comprimir, (d) Descomprimir, (s) Salir: ";
+		cin >> opcion;
+
+		if (convertirMinusculas(opcion) != "c" && convertirMinusculas(opcion) != "d" && convertirMinusculas(opcion) != "s")
+		{
+			cout << "Opción no válida. Intente de nuevo." << endl;
+			continue;
+		}
+		else if (convertirMinusculas(opcion) == "c")
+		{
+			cout << "\nHa seleccionado la opción de Comprimir un archivo." << endl;
+		}
+		else if (convertirMinusculas(opcion) == "d")
+		{
+			cout << "\nHa seleccionado la opción de Descomprimir un archivo." << endl;
+		}
+		else if (convertirMinusculas(opcion) == "s")
+		{
+			cout << "Saliendo del Menu." << endl;
+			break;
+		}
+
+		string inputFile, outputFile;
+		cout << "\nIngrese el archivo de entrada: ";
+		cin >> inputFile;
+		cout << "\nIngrese el archivo de salida: ";
+		cin >> outputFile;
+	
+	
+		if (convertirMinusculas(opcion) == "c")
+			CrearArbolArchivo(inputFile, outputFile);
+		else if (convertirMinusculas(opcion) == "d")
+			DescomprimirArchivo(inputFile, outputFile);
+	}
 	
 
 	return 0;

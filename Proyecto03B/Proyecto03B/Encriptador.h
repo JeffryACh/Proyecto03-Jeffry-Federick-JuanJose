@@ -28,10 +28,12 @@ private:
     void construirClaveInversa();
 };
 
+
+
 struct cambio 
 {
-static string encriptar(string a, int veces);
-static string desencriptar(string a, int veces);
+static string encriptar2(string a, int veces);
+static string desencriptar2(string a, int veces);
 };
 
 /*
@@ -43,18 +45,18 @@ static string desencriptar(string a, int veces);
 * @returns:
 *   + string: Cadena encriptada o desencriptada
 */
-inline string cambio::encriptar(string a, int veces) 
+inline string cambio::encriptar2(string a, int veces) 
 {
     if (a.length() < 2 || !veces) return a;
 	string n = "";
     while (a.length()) 
     {
-        if (a.length() > 1) n += a.at(a.length() - 1); // ol
+        if (a.length() > 1) n += a.at(a.length() - 1); 
         n += a.at(0); // ah
         if (a.length() > 2) a = a.substr(1, a.length() - 2);
         else break;
     }
-    return encriptar(n, veces - 1);
+    return encriptar2(n, veces - 1);
 }
 
 /*
@@ -66,14 +68,14 @@ inline string cambio::encriptar(string a, int veces)
 * @returns:
 *   + string: Cadena desencriptada
 */
-inline string cambio::desencriptar(string a, int veces) 
+inline string cambio::desencriptar2(string a, int veces) 
 {
     if (a.length() < 2 || !veces) return a;
     string n = "";
     for (int i = 1; i < a.length(); i += 2) n += a.at(i); 
     int ultimo = a.length() - (a.length() % 2 ? 1 : 2);
     for (int i = ultimo; i >= 0; i -= 2) n += a.at(1);
-    return desencriptar(n, veces - 1);
+    return desencriptar2(n, veces - 1);
 }
 
 #endif // Encriptador_H

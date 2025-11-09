@@ -32,9 +32,6 @@
     <Text Include="Entrada.txt">
       <Filter>Archivos de recursos\Entradas</Filter>
     </Text>
-    <Text Include="Descomprimido.txt">
-      <Filter>Archivos de recursos\Salidas</Filter>
-    </Text>
     <Text Include="Salida.txt">
       <Filter>Archivos de recursos\Salidas</Filter>
     </Text>
@@ -60,9 +57,6 @@
   <ItemGroup>
     <Image Include="Entrada.bmp">
       <Filter>Archivos de recursos\Entradas</Filter>
-    </Image>
-    <Image Include="Descomprimido.bmp">
-      <Filter>Archivos de recursos\Salidas</Filter>
     </Image>
     <Image Include="Comprimido.jpg">
       <Filter>Archivos de recursos\Comprimidos</Filter>
@@ -107,6 +101,18 @@
     </None>
     <None Include="ComprimirNuevo.rar">
       <Filter>Archivos de recursos\Comprimidos</Filter>
+    </None>
+    <None Include="PruebaPDF.pdf">
+      <Filter>Archivos de recursos\Entradas</Filter>
+    </None>
+    <None Include="ComprimidoPDF.rar">
+      <Filter>Archivos de recursos\Comprimidos</Filter>
+    </None>
+    <None Include="ComprimidoPDF.zip">
+      <Filter>Archivos de recursos\Comprimidos</Filter>
+    </None>
+    <None Include="SalidaZIP.pdf">
+      <Filter>Archivos de recursos\Salidas</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
