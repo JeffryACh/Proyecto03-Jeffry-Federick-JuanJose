@@ -267,8 +267,12 @@ int main()
 {
 	string opcion;
 
-
-	
+	// Menú principal
+	// Observación: Permite al usuario seleccionar entre comprimir, descomprimir o salir del programa.
+	// Utiliza un bucle while para mantener el menú activo hasta que el usuario decida salir.
+	// Valida la entrada del usuario y llama a las funciones correspondientes según la opción seleccionada.
+	// Solicita al usuario los nombres de los archivos de entrada y salida para las operaciones de compresión y descompresión.
+	// Muestra mensajes informativos sobre el estado de las operaciones realizadas.
 	while (convertirMinusculas(opcion) != "s")
 	{
 		cout << "\n\n\n-----------------------------";
