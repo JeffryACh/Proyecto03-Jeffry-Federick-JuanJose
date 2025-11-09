@@ -32,9 +32,6 @@
     <Text Include="Entrada.txt">
       <Filter>Archivos de recursos\Entradas</Filter>
     </Text>
-    <Text Include="Salida.txt">
-      <Filter>Archivos de recursos\Salidas</Filter>
-    </Text>
     <Text Include="Salida2mp3.txt">
       <Filter>Archivos de recursos\Salidas</Filter>
     </Text>
@@ -52,6 +49,9 @@
     </Text>
     <Text Include="Nuevo.txt">
       <Filter>Archivos de recursos\Entradas</Filter>
+    </Text>
+    <Text Include="Salida.txt">
+      <Filter>Archivos de recursos\Salidas</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
