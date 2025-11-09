@@ -127,3 +127,5 @@ void Encriptador::desencriptar(const string & pInputFile, const string & pOutput
     out.close();
     cout << "Archivo desencriptado correctamente: " << pOutputFile << endl;
 }
+
+
