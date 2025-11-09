@@ -327,13 +327,9 @@ int main()
 			continue;
 		}
 		else if (convertirMinusculas(opcion) == "c")
-		{
 			cout << "\nHa seleccionado la opción de Comprimir un archivo." << endl;
-		}
 		else if (convertirMinusculas(opcion) == "d")
-		{
 			cout << "\nHa seleccionado la opción de Descomprimir un archivo." << endl;
-		}
 		else if (convertirMinusculas(opcion) == "s")
 		{
 			cout << "Saliendo del Menu." << endl;
@@ -349,7 +345,7 @@ int main()
 	
 		if (convertirMinusculas(opcion) == "c")
 			CrearArbolArchivo(inputFile, outputFile);
-		else if (convertirMinusculas(opcion) == "d")
+		else
 			DescomprimirArchivo(inputFile, outputFile);
 	}
 	
