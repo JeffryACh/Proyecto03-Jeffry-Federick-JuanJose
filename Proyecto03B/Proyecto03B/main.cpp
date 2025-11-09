@@ -6,7 +6,7 @@
 *   - Juan J. Rojas
 *
 * Created: 07/11/2025 10:50
-* Modified: 07/11/2025 14:10
+* Modified: 08/11/2025 21:30
 */
 
 #include <iostream>
@@ -32,7 +32,6 @@ int main()
         enc.desencriptar(inputFile, outputFile);
     else 
         cout << "Opción no válida." << endl;
-    // Funcion del video tutorial
     setlocale(LC_ALL, "");
     system("cls");
 
@@ -43,7 +42,7 @@ int main()
         cout << "\n" << "Elija una opcion:" << endl;
         cout << " Encriptar: #1" << "\n" << " Desencriptar: #2" << endl;
         char opt;
-        do opt = getch();
+        do opt = _getch();
         while (opt != '1' && opt != '2');
         system("cls");
         cout << " Digite el numero de clave" << endl;
@@ -51,11 +50,13 @@ int main()
         cout << "Escribe el dato" << endl;
         cin >> ws;
         getline(cin, msg);
-        if (opt == '1') {
+        if (opt == '1')
+        {
             string nuevo = cambio::encriptar(msg, clave);
             cout << "dato encriptado " << nuevo << " " << endl;
         }
-        else {
+        else 
+        {
             string nuevo = cambio::desencriptar(msg, clave);
             cout << "dato desencriptado " << nuevo << " " << endl;
         }

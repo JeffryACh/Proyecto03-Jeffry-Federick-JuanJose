@@ -36,4 +36,17 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Archivo01.txt">
+      <Filter>Archivos de recursos\Archivos</Filter>
+    </Text>
+    <Text Include="Salida01.txt">
+      <Filter>Archivos de recursos\ArchivosDesifrados</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EncriptadoTXT01.enc">
+      <Filter>Archivos de recursos\ArchivosCifrados</Filter>
+    </None>
+  </ItemGroup>
 </Project>
