@@ -6,7 +6,7 @@
 *   - Juan J. Rojas
 *
 * Created: 07/11/2025 10:50
-* Modified: 08/11/2025 14:40
+* Modified: 08/11/2025 18:40
 */
 
 #include <iostream>
@@ -106,7 +106,8 @@ void decode(Node* raiz, int& index, string str)
 	if (raiz == nullptr) 
 		return;
 	
-	if (!raiz->izq && !raiz->der) {
+	if (!raiz->izq && !raiz->der) 
+	{
 		cout << raiz->simbolo;
 		return;
 	}
@@ -251,9 +252,11 @@ void CrearArbolArchivo(const string& inputFile, const string& outputFile) {
 * @return:
 *	+ void: No retorna valor.
 */
-void DescomprimirArchivo(const string& inputFile, const string& outputFile) {
+void DescomprimirArchivo(const string& inputFile, const string& outputFile)
+{
 	ifstream in(inputFile, ios::binary);
-	if (!in) {
+	if (!in) 
+	{
 		cerr << "Error al abrir el archivo comprimido." << endl;
 		return;
 	}
@@ -261,7 +264,8 @@ void DescomprimirArchivo(const string& inputFile, const string& outputFile) {
 	size_t mapSize;
 	in.read(reinterpret_cast<char*>(&mapSize), sizeof(size_t));
 	unordered_map<string, char> CodigoHuffman; // Cambiando a char para compatibilidad
-	for (size_t i =0; i < mapSize; ++i) {
+	for (size_t i =0; i < mapSize; ++i) 
+	{
 		char simbolo = in.get();
 		size_t len;
 		in.read(reinterpret_cast<char*>(&len), sizeof(size_t));
@@ -294,7 +298,8 @@ void DescomprimirArchivo(const string& inputFile, const string& outputFile) {
 	cout << "Archivo descomprimido correctamente: " << outputFile << endl;
 }
 
-int main() {
+int main() 
+{
 	cout << "\n\n\n-----------------------------";
 	cout << "\n Compresion y Descompresion con el metodo de Huffman";
 
