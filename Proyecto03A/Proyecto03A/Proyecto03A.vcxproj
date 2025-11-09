@@ -126,20 +126,41 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Descomprimidoentrada.txt" />
+    <Text Include="Descomprimido.txt" />
     <Text Include="Entrada.txt" />
+    <Text Include="Nuevo.txt" />
+    <Text Include="Salida.txt" />
+    <Text Include="Salida2mp3.txt" />
+    <Text Include="SalidaEXE.txt" />
+    <Text Include="SalidaJPG.txt" />
+    <Text Include="SalidaMP4.txt" />
+    <Text Include="SalidaRAR.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="entrada.exe" />
-    <None Include="entrada.zip" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Descomprimidoentrada.bmp" />
+    <Image Include="Comprimido.jpg" />
+    <Image Include="ComprimidoBMP.jpg" />
+    <Image Include="Descomprimido.bmp" />
     <Image Include="Entrada.bmp" />
-    <Image Include="entrada.jpg" />
+    <Image Include="SalidaEXE.bmp" />
+    <Image Include="SalidaJPG.bmp" />
+    <Image Include="SalidaMP3.bmp" />
+    <Image Include="SalidaMP4.bmp" />
+    <Image Include="SalidaZIP.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="entrada.mp3" />
+    <None Include="Comprimido.exe" />
+    <None Include="Comprimido.zip" />
+    <None Include="ComprimidoBMP.exe" />
+    <None Include="ComprimidoBMP.zip" />
+    <None Include="ComprimidoTXT.rar" />
+    <None Include="ComprimirNuevo.rar" />
+    <None Include="LOL.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="ComprimidoBMP.mp3" />
+    <Media Include="ComprimidoBMP.mp4" />
+    <Media Include="ComprimidoTXT.mp4" />
+    <Media Include="Salida.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -32,31 +32,94 @@
     <Text Include="Entrada.txt">
       <Filter>Archivos de recursos\Entradas</Filter>
     </Text>
-    <Text Include="Descomprimidoentrada.txt">
+    <Text Include="Descomprimido.txt">
       <Filter>Archivos de recursos\Salidas</Filter>
     </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="entrada.zip">
-      <Filter>Archivos de recursos\Comprimidos</Filter>
-    </None>
-    <None Include="entrada.exe">
-      <Filter>Archivos de recursos\Comprimidos</Filter>
-    </None>
+    <Text Include="Salida.txt">
+      <Filter>Archivos de recursos\Salidas</Filter>
+    </Text>
+    <Text Include="Salida2mp3.txt">
+      <Filter>Archivos de recursos\Salidas</Filter>
+    </Text>
+    <Text Include="SalidaMP4.txt">
+      <Filter>Archivos de recursos\Salidas</Filter>
+    </Text>
+    <Text Include="SalidaJPG.txt">
+      <Filter>Archivos de recursos\Salidas</Filter>
+    </Text>
+    <Text Include="SalidaEXE.txt">
+      <Filter>Archivos de recursos\Salidas</Filter>
+    </Text>
+    <Text Include="SalidaRAR.txt">
+      <Filter>Archivos de recursos\Salidas</Filter>
+    </Text>
+    <Text Include="Nuevo.txt">
+      <Filter>Archivos de recursos\Entradas</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Entrada.bmp">
       <Filter>Archivos de recursos\Entradas</Filter>
     </Image>
-    <Image Include="Descomprimidoentrada.bmp">
+    <Image Include="Descomprimido.bmp">
       <Filter>Archivos de recursos\Salidas</Filter>
     </Image>
-    <Image Include="entrada.jpg">
+    <Image Include="Comprimido.jpg">
       <Filter>Archivos de recursos\Comprimidos</Filter>
+    </Image>
+    <Image Include="SalidaZIP.bmp">
+      <Filter>Archivos de recursos\Salidas</Filter>
+    </Image>
+    <Image Include="SalidaEXE.bmp">
+      <Filter>Archivos de recursos\Salidas</Filter>
+    </Image>
+    <Image Include="ComprimidoBMP.jpg">
+      <Filter>Archivos de recursos\Comprimidos</Filter>
+    </Image>
+    <Image Include="SalidaJPG.bmp">
+      <Filter>Archivos de recursos\Salidas</Filter>
+    </Image>
+    <Image Include="SalidaMP3.bmp">
+      <Filter>Archivos de recursos\Salidas</Filter>
+    </Image>
+    <Image Include="SalidaMP4.bmp">
+      <Filter>Archivos de recursos\Salidas</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="entrada.mp3">
+    <None Include="Comprimido.exe">
+      <Filter>Archivos de recursos\Comprimidos</Filter>
+    </None>
+    <None Include="Comprimido.zip">
+      <Filter>Archivos de recursos\Comprimidos</Filter>
+    </None>
+    <None Include="ComprimidoBMP.zip">
+      <Filter>Archivos de recursos\Comprimidos</Filter>
+    </None>
+    <None Include="LOL.exe">
+      <Filter>Archivos de recursos\Comprimidos</Filter>
+    </None>
+    <None Include="ComprimidoBMP.exe">
+      <Filter>Archivos de recursos\Comprimidos</Filter>
+    </None>
+    <None Include="ComprimidoTXT.rar">
+      <Filter>Archivos de recursos\Comprimidos</Filter>
+    </None>
+    <None Include="ComprimirNuevo.rar">
+      <Filter>Archivos de recursos\Comprimidos</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="ComprimidoTXT.mp4">
+      <Filter>Archivos de recursos\Comprimidos</Filter>
+    </Media>
+    <Media Include="Salida.mp3">
+      <Filter>Archivos de recursos\Comprimidos</Filter>
+    </Media>
+    <Media Include="ComprimidoBMP.mp3">
+      <Filter>Archivos de recursos\Comprimidos</Filter>
+    </Media>
+    <Media Include="ComprimidoBMP.mp4">
       <Filter>Archivos de recursos\Comprimidos</Filter>
     </Media>
   </ItemGroup>

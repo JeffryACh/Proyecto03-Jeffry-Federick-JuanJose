@@ -13,6 +13,7 @@
 #include <string>
 #include <queue>
 #include <unordered_map>
+#include <fstream>
 
 using namespace std;
 
@@ -100,7 +101,8 @@ void encode(Node* raiz, string str, unordered_map<char, string>& CodigoHuffman)
 * @return:
 *	+ void: No retorna valor.
 */
-void decode(Node* raiz, int& index, string str) {
+void decode(Node* raiz, int& index, string str) 
+{
 	if (raiz == nullptr) 
 		return;
 	
@@ -168,16 +170,151 @@ void CrearArbol(string text)
 	cout << "\n\n\n";
 }
 
-int main() 
-{
+/*
+* Crea el arbol de Huffman y comprime un archivo
+* Observación: Lee un archivo, construye el árbol de Huffman y crea un archivo comprimido.
+* @param:
+*	- string inputFile: Nombre del archivo a comprimir.
+*   - string outputFile: Nombre del archivo comprimido.
+* @return:
+*	+ void: No retorna valor.
+*/
+void CrearArbolArchivo(const string& inputFile, const string& outputFile) {
+	ifstream in(inputFile, ios::binary);
+	if (!in) 
+	{
+		cerr << "Error al abrir el archivo para comprimir." << endl;
+		return;
+	}
+
+	unordered_map<char, int> frecuencia; // Cambiando a char para compatibilidad con encode
+	char ch;
+	while (in.get(ch)) 
+		frecuencia[ch]++;
+	
+
+	priority_queue<Node*, vector<Node*>, comp> pq;
+	for (auto pair : frecuencia) 
+		pq.push(getNode(pair.first, pair.second, nullptr, nullptr));
+	
+
+	while (pq.size() !=1)
+	{
+		Node* izq = pq.top(); pq.pop();
+		Node* der = pq.top(); pq.pop();
+		int sum = izq->frecuencia + der->frecuencia;
+		pq.push(getNode('\0', sum, izq, der));
+	}
+
+	Node* raiz = pq.top();
+	unordered_map<char, string> CodigoHuffman; // Cambiando a char para compatibilidad con encode
+	encode(raiz, "", CodigoHuffman);
+
+	in.clear();
+	in.seekg(0);
+	ofstream out(outputFile, ios::binary);
+	if (!out) 
+	{
+		cerr << "Error al crear el archivo comprimido." << endl;
+		return;
+	}
+
+	size_t mapSize = CodigoHuffman.size();
+	out.write(reinterpret_cast<const char*>(&mapSize), sizeof(size_t));
+	for (auto pair : CodigoHuffman) 
+	{
+		out.put(pair.first);
+		size_t len = pair.second.size();
+		out.write(reinterpret_cast<const char*>(&len), sizeof(size_t));
+		out.write(pair.second.c_str(), len);
+	}
+
+	while (in.get(ch)) 
+	{
+		string code = CodigoHuffman[ch];
+		for (char bit : code) 
+			out.put(bit);
+		
+	}
+
+	in.close();
+	out.close();
+	cout << "Archivo comprimido correctamente: " << outputFile << endl;
+}
+
+/*
+* Descomprime un archivo utilizando el método de Huffman
+* Observación: Lee un archivo comprimido y lo descomprime utilizando el árbol de Huffman.
+* @param:
+*	- string inputFile: Nombre del archivo comprimido.
+*   - string outputFile: Nombre del archivo descomprimido.
+* @return:
+*	+ void: No retorna valor.
+*/
+void DescomprimirArchivo(const string& inputFile, const string& outputFile) {
+	ifstream in(inputFile, ios::binary);
+	if (!in) {
+		cerr << "Error al abrir el archivo comprimido." << endl;
+		return;
+	}
+
+	size_t mapSize;
+	in.read(reinterpret_cast<char*>(&mapSize), sizeof(size_t));
+	unordered_map<string, char> CodigoHuffman; // Cambiando a char para compatibilidad
+	for (size_t i =0; i < mapSize; ++i) {
+		char simbolo = in.get();
+		size_t len;
+		in.read(reinterpret_cast<char*>(&len), sizeof(size_t));
+		string code(len, '\0');
+		in.read(&code[0], len);
+		CodigoHuffman[code] = simbolo;
+	}
+
+	ofstream out(outputFile, ios::binary);
+	if (!out) 
+	{
+		cerr << "Error al crear el archivo descomprimido." << endl;
+		return;
+	}
+
+	string buffer;
+	char bit;
+	while (in.get(bit)) 
+	{
+		buffer += bit;
+		if (CodigoHuffman.find(buffer) != CodigoHuffman.end()) 
+		{
+			out.put(CodigoHuffman[buffer]);
+			buffer.clear();
+		}
+	}
+
+	in.close();
+	out.close();
+	cout << "Archivo descomprimido correctamente: " << outputFile << endl;
+}
+
+int main() {
 	cout << "\n\n\n-----------------------------";
 	cout << "\n Compresion y Descompresion con el metodo de Huffman";
 
-	string text;
-	cout << "\n\nIngrese el mensaje que desea comprimir: ";
-	getline(cin, text);
-	CrearArbol(text);
-	cout << "\n";
-	return 0;
+	string opcion;
+	cout << "\n\nSeleccione una opción: (c) Comprimir, (d) Descomprimir: ";
+	cin >> opcion;
 
+	string inputFile, outputFile;
+	cout << "\nIngrese el archivo de entrada: ";
+	cin >> inputFile;
+	cout << "\nIngrese el archivo de salida: ";
+	cin >> outputFile;
+	
+	if (opcion == "c") 
+		CrearArbolArchivo(inputFile, outputFile);
+	else if (opcion == "d") 
+		DescomprimirArchivo(inputFile, outputFile);
+	else 
+		cout << "Opción no válida." << endl;
+	
+
+	return 0;
 }
