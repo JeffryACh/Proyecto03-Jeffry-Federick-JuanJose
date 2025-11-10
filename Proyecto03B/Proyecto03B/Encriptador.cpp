@@ -9,14 +9,14 @@ Encriptador::Encriptador()
 * Genera una clave de encriptación aleatoria
 * Observación: La clave es una permutación de los 256 valores posibles de un byte
 * @param:
-*   - Ninguno
+* - Ninguno
 * @returns:
-*   + Ninguno
+* + Ninguno
 */
 void Encriptador::generarClave() 
 {
     clave.resize(256);
-    for (int i = 0; i < 256; i++) 
+    for (int i =0; i <256; i++) 
         clave[i] = static_cast<unsigned char>(i);
     random_shuffle(clave.begin(), clave.end());
     construirClaveInversa();
@@ -26,14 +26,14 @@ void Encriptador::generarClave()
 * Construye la clave inversa para desencriptación
 * Observación: La clave inversa mapea cada valor cifrado de vuelta a su valor original
 * @param:
-*   - Ninguno
+* - Ninguno
 * @returns:
-*   + Ninguno
+* + Ninguno
 */
 void Encriptador::construirClaveInversa() 
 {
     claveInversa.resize(256);
-    for (int i = 0; i < 256; i++) 
+    for (int i =0; i <256; i++) 
     {
         unsigned char original = static_cast<unsigned char>(i);
         unsigned char cifrado = clave[i];
@@ -42,15 +42,52 @@ void Encriptador::construirClaveInversa()
 }
 
 /*
-* Encripta un archivo usando la clave generada
-* Observación: La clave se guarda en el encabezado del archivo encriptado
+* Aplica un patrón de encriptación al byte
 * @param:
-*   - string &pInputFile: Ruta del archivo a encriptar
-*   - pOutputFile: Ruta donde se guardará el archivo encriptado
+* - unsigned char byte: Byte a encriptar
+* - int tipo: Tipo de patrón de encriptación
 * @returns:
-*   + Ninguno
+* + unsigned char: Byte encriptado
 */
-void Encriptador::encriptar(const string &pInputFile, const string &pOutputFile) 
+unsigned char Encriptador::aplicarPatron(unsigned char byte, int tipo) 
+{
+    switch (tipo) 
+    {
+        case1: // Inversión de bits
+            return ~byte;
+        case2: // Inversión de bits por posición
+            return ((byte &0xF0) >>4) | ((byte &0x0F) <<4);
+        case3: // Máscara10101010
+            return byte ^0xAA;
+        default:
+            return byte;
+    }
+}
+
+/*
+* Revertir un patrón de encriptación al byte
+* @param:
+* - unsigned char byte: Byte a desencriptar
+* - int tipo: Tipo de patrón de desencriptación
+* @returns:
+* + unsigned char: Byte desencriptado
+*/
+unsigned char Encriptador::revertirPatron(unsigned char byte, int tipo) 
+{
+ return aplicarPatron(byte, tipo); // Los patrones son reversibles
+}
+
+/*
+* Encripta un archivo usando un patrón de encriptación
+* Observación: El patrón se guarda en el encabezado del archivo encriptado
+* @param:
+* - string &pInputFile: Ruta del archivo a encriptar
+* - string &pOutputFile: Ruta donde se guardará el archivo encriptado
+* - int tipo: Tipo de patrón de encriptación
+* @returns:
+* + Ninguno
+*/
+void Encriptador::encriptar(const string &pInputFile, const string &pOutputFile, int tipo) 
 {
     ifstream in(pInputFile, ios::binary);
     if (!in) 
@@ -66,13 +103,13 @@ void Encriptador::encriptar(const string &pInputFile, const string &pOutputFile)
         return;
     }
 
-    // Guardar la clave en el encabezado
-    out.write(reinterpret_cast<const char*>(clave.data()), clave.size());
+    // Guardar el tipo de patrón en el encabezado
+    out.put(static_cast<char>(tipo));
 
     char ch;
     while (in.get(ch)) 
     {
-        unsigned char nuevo = clave[static_cast<unsigned char>(ch)];
+        unsigned char nuevo = aplicarPatron(static_cast<unsigned char>(ch), tipo);
         out.put(static_cast<char>(nuevo));
     }
 
@@ -82,14 +119,14 @@ void Encriptador::encriptar(const string &pInputFile, const string &pOutputFile)
 }
 
 /*
-* Desencripta un archivo usando la clave incluida en su encabezado
+* Desencripta un archivo usando un patrón de desencriptación
 * @param:
-*   - pInputFile: Ruta del archivo encriptado
-*   - pOutputFile: Ruta donde se guardará el archivo desencriptado
+* - string pInputFile: Ruta del archivo encriptado
+* - string pOutputFile: Ruta donde se guardará el archivo desencriptado
 * @returns:
-*   + Ninguno
+* + Ninguno
 */
-void Encriptador::desencriptar(const string & pInputFile, const string & pOutputFile) 
+void Encriptador::desencriptar(const string &pInputFile, const string &pOutputFile) 
 {
     ifstream in(pInputFile, ios::binary);
     if (!in) 
@@ -105,21 +142,13 @@ void Encriptador::desencriptar(const string & pInputFile, const string & pOutput
         return;
     }
 
-    // Leer la clave del encabezado
-    vector<unsigned char> claveLeida(256);
-    in.read(reinterpret_cast<char*>(claveLeida.data()), claveLeida.size());
-
-    // Construir clave inversa a partir de la clave leída
-    vector<unsigned char> claveInv(256);
-    for (int i = 0; i < 256; i++) {
-        unsigned char cifrado = claveLeida[i];
-        claveInv[cifrado] = static_cast<unsigned char>(i);
-    }
+    // Leer el tipo de patrón del encabezado
+    int tipo = in.get();
 
     char ch;
     while (in.get(ch)) 
     {
-        unsigned char original = claveInv[static_cast<unsigned char>(ch)];
+        unsigned char original = revertirPatron(static_cast<unsigned char>(ch), tipo);
         out.put(static_cast<char>(original));
     }
 
@@ -127,5 +156,6 @@ void Encriptador::desencriptar(const string & pInputFile, const string & pOutput
     out.close();
     cout << "Archivo desencriptado correctamente: " << pOutputFile << endl;
 }
+
 
 

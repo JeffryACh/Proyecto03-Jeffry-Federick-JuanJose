@@ -9,60 +9,76 @@
 * Modified: 08/11/2025 21:30
 */
 
-#include <iostream>
 #include "Encriptador.h"
+
+/*
+* Convierte una cadena de texto a minusculas
+* Observación: Utiliza la función transform para convertir todos los caracteres de una cadena a minúsculas.
+* @param:
+*	- string& texto: Cadena de texto a convertir.
+* @return:
+*	+ string: Cadena de texto convertida a minúsculas.
+*/
+string convertirMinusculas(string& texto)
+{
+    transform(texto.begin(), texto.end(), texto.begin(), [](unsigned char c) {
+        return std::tolower(c);
+        });
+    return texto;
+}
 
 int main() 
 {   
 	// Version actual del programa
     Encriptador enc;
     string opcion;
-    cout << "Seleccione una opción: (e) Encriptar, (d) Desencriptar: ";
-    cin >> opcion;
 
-    string inputFile, outputFile;
-    cout << "Ingrese el archivo de entrada: ";
-    cin >> inputFile;
-    cout << "Ingrese el archivo de salida: ";
-    cin >> outputFile;
+	// Menú principal
+	// Bucle infinito hasta que el usuario decida salir
+	// Entrada y validación de la opción del usuario
+    while (true)
+    {
+        cout << "Seleccione una opción: (e) Encriptar, (d) Desencriptar, (s) Salir: ";
+        cin >> opcion;
 
-    if (opcion == "e") 
-        enc.encriptar(inputFile, outputFile);
-    else if (opcion == "d") 
-        enc.desencriptar(inputFile, outputFile);
-    else 
-        cout << "Opción no válida." << endl;
-    setlocale(LC_ALL, "");
-    system("cls");
-
-    string msg;
-    int clave;
-    while (1) {
-        cout << "\n" << "Programa de cifrado mediante mezclado de caracteres" << endl;
-        cout << "\n" << "Elija una opcion:" << endl;
-        cout << " Encriptar: #1" << "\n" << " Desencriptar: #2" << endl;
-        char opt;
-        do opt = _getch();
-        while (opt != '1' && opt != '2');
-        system("cls");
-        cout << " Digite el numero de clave" << endl;
-        cin >> clave;
-        cout << "Escribe el dato" << endl;
-        cin >> ws;
-        getline(cin, msg);
-        if (opt == '1')
+        if (convertirMinusculas(opcion) != "e" && convertirMinusculas(opcion) != "d" && convertirMinusculas(opcion) != "s")
         {
-            string nuevo = cambio::encriptar2(msg, clave);
-            cout << "dato encriptado " << nuevo << " " << endl;
+            cout << "Opción no válida. Intente de nuevo." << endl;
+			cout << "Solo se aceptan las opciones 'e', 'd' o 's'." << endl;
+            continue;
         }
-        else 
+        else if (convertirMinusculas(opcion) == "e")
+            cout << "\nHa seleccionado la opción de Encriptar un archivo." << endl;
+        else if (convertirMinusculas(opcion) == "d")
+            cout << "\nHa seleccionado la opción de Desencriptar un archivo." << endl;
+        else if (convertirMinusculas(opcion) == "s")
         {
-            string nuevo = cambio::desencriptar2(msg, clave);
-            cout << "dato desencriptado " << nuevo << " " << endl;
+            cout << "Saliendo del Menu." << endl;
+            break;
         }
-        _getch();
+        else
+        {
+			cout << "Error de Opcion." << endl;
+			cout << "Solo se aceptan las opciones 'e', 'd' o 's'." << endl;
+			continue;
+        }
 
-        system("cls");
+        string inputFile, outputFile;
+        int tipo;
+        cout << "Ingrese el archivo de entrada: ";
+        cin >> inputFile;
+        cout << "Ingrese el archivo de salida: ";
+        cin >> outputFile;
+
+        if (convertirMinusculas(opcion) == "e")
+        {
+            cout << "Seleccione el tipo de patrón de encriptación (1,2,3): ";
+            cin >> tipo;
+            enc.encriptar(inputFile, outputFile, tipo);
+        }
+        else if (convertirMinusculas(opcion) == "d")
+            enc.desencriptar(inputFile, outputFile);
     }
+
     return 0;
 }
